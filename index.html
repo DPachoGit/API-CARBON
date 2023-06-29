@@ -7,8 +7,20 @@
     <title>Document</title>
 </head>
 <body>
-    
+    <section id="formContainer">
+        <div class="formInContainer">
+        <select id="brandSelector">
+          <option value="" disabled selected>Seleccione una marca</option>
+        </select>
+        <select id="modelSelector">
+          <option value="" disabled selected>Seleccione un modelo</option>
+        </select>
+        <input type="range" id="kmInput" min="0" max="1000" step="1" value="50"> <!-- Agrega un input para que el usuario ingrese los kilómetros -->
+        <span id="kmValue">50</span>
+        <p id="emissionsResult">0</p> <!-- Agrega un elemento donde se mostrarán las emisiones -->
+        </div>
+      </section>
     
 </body>
-<script type="module" src="./components/fetchApi.js"></script>
+<script type="module" src="./index.js"></script>
 </html>
