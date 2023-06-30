@@ -8,17 +8,17 @@
 </head>
 <body>
     <section id="formContainer">
-        <div class="formInContainer">
+      <div class="formInContainer">
+          <h1>CarbonTrack</h1>
         <select id="brandSelector">
-          <option value="" disabled selected>Seleccione una marca</option>
+          <option value="" disabled selected>Select a brand</option>
         </select>
         <select id="modelSelector">
-          <option value="" disabled selected>Seleccione un modelo</option>
+          <option value="" disabled selected>Select a model</option>
         </select>
-        <input type="range" id="kmInput" min="0" max="1000" step="1" value="50"> <!-- Agrega un input para que el usuario ingrese los kilómetros -->
-        <span id="kmValue">50</span>
-        <p id="emissionsResult">0</p> <!-- Agrega un elemento donde se mostrarán las emisiones -->
-        </div>
+        <input type="range" id="kmInput" min="0" max="1000" step="1" value="50">
+        <input type="number" id="kmValueInput" min="0" max="1000" step="1" value="50">
+        <p id="emissionsResult">RESULT</p>
       </section>
     
 </body>

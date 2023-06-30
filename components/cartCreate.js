@@ -15,9 +15,11 @@ class FormCreate {
     this.emissionsResult = document.getElementById("emissionsResult");
     /* Selecciono por id el input y el tag p y le añado un event lisener con un bind apuntando a la clase misma */
     this.kmInput = document.getElementById("kmInput");
-    this.kmValue = document.getElementById("kmValue");
-    this.kmInput.addEventListener("input", this.handleKmInput.bind(this));
-    }
+    this.kmValueInput = document.getElementById("kmValueInput");
+    this.kmInput.addEventListener("input", this.handleKmInputChange.bind(this));
+    this.kmValueInput.addEventListener("input", this.handleKmValueInputChange.bind(this));
+    this.kmValue = this.kmInput.value;
+  }
     /* Añade a brandSelector los nombres que salen de hacer un fetch con el metodo getBrand */
     async fillBrandSelector() {
     /* Por cada marca crea una opcion para el selector brandSelector. Como nombre le pone el name y como valor la id */
@@ -29,7 +31,7 @@ class FormCreate {
     this.brandSelector.appendChild(option);
     });
     }
-    /* Con el event lisener que hay en constructor cuando cambie el selector de brand  */
+    /* Con el event lisener que hay en constructor cuando cambie el selector de brand */
     async handleBrandSelection(event) {
     /* Guardamos en una variable la id "value" haciendo target a la opcion que esta siendo seleccionada */
     const selectedBrandId = event.target.value;
@@ -38,7 +40,7 @@ class FormCreate {
     const modelList = await this.newFetch.getModel(selectedBrandId);
     this.fillModelSelector(modelList);
     }
-    /* Cuando recibamos la lista de modelos por cada uno  */
+    /* Cuando recibamos la lista de modelos por cada uno */
     fillModelSelector(modelList) {
     modelList.forEach((model) => {
     const option = document.createElement("option");
@@ -47,25 +49,34 @@ class FormCreate {
     this.modelSelector.appendChild(option);
     });
     }
-    clearModelSelector() {
-    while (this.modelSelector.firstChild) {
-    this.modelSelector.removeChild(this.modelSelector.firstChild);
-    }
-    }
+    /* Cuando selecionas un modelo se hace un fetch para sacar una estimacion de co2 y pegarla en el tag p */
     handleModelSelection(event) {
-    const selectedModelId = event.target.value;
-
-    this.newFetch.getEstimates(selectedModelId, this.kmValue.textContent) // Llamar al método getEstimates
-    .then((emissions) => {
-    // Actualizar el elemento HTML con el resultado de las emisiones
-    this.emissionsResult.textContent = emissions + " kg.";
-    })
-    .catch((err) => {
-    console.error(err);
-    });
+      const selectedModelId = event.target.value;
+  
+      this.newFetch
+        .getEstimates(selectedModelId, this.kmValue)
+        .then((emissions) => {
+          this.emissionsResult.textContent = emissions + "kg";
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     }
-    handleKmInput() {
-    this.kmValue.textContent = this.kmInput.value; // Actualizar el valor mostrado en tiempo real
+    /* Mientras que en el modelSelector tengamos opciones elimina opciones */
+    clearModelSelector() {
+      while (this.modelSelector.firstChild) {
+      this.modelSelector.removeChild(this.modelSelector.firstChild);
+      }
+      }
+    /* actualiza el valor de kmInput cuando el event lisener del contructor recive un input luego actualiza el valor de kmValueInput*/
+    handleKmInputChange() {
+      this.kmValue = this.kmInput.value; // Actualiza el valor de kmValue al modificar kmInput
+      this.kmValueInput.value = this.kmValue; // Actualiza el valor de kmValueInput
+    }  
+    /* actualiza el valor de kmValueInput cuando el event lisener del contructor recive un input luego actualiza el valor de kmInput*/
+    handleKmValueInputChange() {
+      this.kmValue = this.kmValueInput.value; // Actualiza el valor de kmValue al modificar kmValueInput
+      this.kmInput.value = this.kmValue; // Actualiza el valor de kmInput
     }
 }
 
